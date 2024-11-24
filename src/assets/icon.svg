@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="#4F46E5"/>
+  <!-- Simplified clothing hanger shape -->
+  <path d="M30 50 L64 80 L98 50 L88 40 Q84 36 78 40 L64 50 L50 40 Q44 36 40 40 L30 50" 
+        fill="white" 
+        stroke="white" 
+        stroke-width="4"/>
+  <path d="M62 80 L66 80 L66 95 L62 95 Z" 
+        fill="white"/>
+  <path d="M40 95 L88 95" 
+        stroke="white" 
+        stroke-width="4"/>
+</svg>
