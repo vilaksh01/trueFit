@@ -1,4 +1,3 @@
-// src/popup/components/App.jsx
 import { h, Fragment } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import {
@@ -6,9 +5,7 @@ import {
   Ruler,
   Loader2,
   RotateCcw,
-  AlertCircle,
-  Star,
-  Scale
+  AlertCircle
 } from 'lucide-react';
 import ProductAnalysis from './ProductAnalysis';
 import UserProfile from './UserProfile';
@@ -26,12 +23,10 @@ const App = () => {
   const loadSavedAnalysis = async () => {
     try {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
       if (tab?.url) {
         const response = await chrome.runtime.sendMessage({
           type: 'GET_ANALYSIS'
         });
-
         if (response?.data) {
           setAnalysis(response.data);
           setActiveTab('fit');
@@ -53,6 +48,7 @@ const App = () => {
         throw new Error('Please navigate to a product page to analyze');
       }
 
+      // Initialize content script if needed
       try {
         await chrome.tabs.sendMessage(tab.id, { type: 'PING' });
       } catch {
@@ -63,9 +59,11 @@ const App = () => {
         await new Promise(resolve => setTimeout(resolve, 500));
       }
 
+      // Request analysis
       await chrome.tabs.sendMessage(tab.id, {
         type: 'ANALYZE_REQUEST'
       });
+
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -78,9 +76,9 @@ const App = () => {
   };
 
   return (
-    <div className="w-[400px] h-[600px] bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100">
-      {/* Header with Navigation */}
-      <div className="sticky top-0 z-10 bg-gradient-to-b from-gray-900 to-gray-900/95 backdrop-blur-sm">
+    <div className="content-wrapper">
+      {/* Sticky Header */}
+      <div className="sticky-header">
         <div className="p-4 pb-2">
           <div className="flex gap-2 p-1 bg-gray-800/50 rounded-lg border border-gray-700/30">
             <button
@@ -107,8 +105,8 @@ const App = () => {
         </div>
       </div>
 
-      {/* Main Content */}
-      <div className="p-4">
+      {/* Scrollable Content */}
+      <div className="main-content scrollable-content">
         {activeTab === 'profile' ? (
           <UserProfile onComplete={() => setActiveTab('fit')} />
         ) : (
@@ -120,7 +118,7 @@ const App = () => {
                 disabled={loading}
                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-purple-600
                          hover:bg-purple-700 rounded-lg transition-colors disabled:opacity-50
-                         disabled:cursor-not-allowed group"
+                         disabled:cursor-not-allowed group text-white"
               >
                 {loading ? (
                   <>
@@ -162,14 +160,14 @@ const App = () => {
 
             {/* Loading State */}
             {loading && (
-              <div className="absolute inset-0 bg-gray-900/80 backdrop-blur-sm
+              <div className="fixed inset-0 bg-gray-900/80 backdrop-blur-sm
                            flex flex-col items-center justify-center text-center p-4">
                 <div className="w-16 h-16 mb-6 relative">
                   <div className="absolute inset-0 rounded-full border-4 border-purple-500/30" />
                   <div className="absolute inset-0 rounded-full border-4 border-purple-500
                                 border-t-transparent animate-spin" />
                 </div>
-                <h3 className="text-lg font-medium mb-2">Analyzing Product</h3>
+                <h3 className="text-lg font-medium mb-2 text-white">Analyzing Product</h3>
                 <p className="text-sm text-gray-400">This may take a few moments...</p>
               </div>
             )}

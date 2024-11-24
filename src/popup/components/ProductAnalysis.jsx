@@ -15,6 +15,8 @@ import {
   CircleAlert
 } from 'lucide-react';
 
+import ReviewSummarizer from '../../components/ReviewSummarizer';
+
 const ConfidenceBadge = ({ level }) => {
   const colors = {
     high: 'bg-green-500/20 text-green-400 border-green-500/20',
@@ -228,6 +230,11 @@ const ProductAnalysis = ({ analysis }) => {
           </div>
         )}
       </FitCard>
+
+      {/* Review Summary */}
+      {analysis.reviews?.length > 0 && (
+        <ReviewSummarizer reviews={analysis.reviews} className="mb-4" />
+      )}
 
       {/* Product Reviews Summary */}
       {analysis.reviews && (

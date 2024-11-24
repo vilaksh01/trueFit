@@ -4,7 +4,7 @@ import { h } from 'preact';
 export const Card = ({ children, className = '', ...props }) => (
   <div
     className={`bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 
-                rounded-xl shadow-xl ${className}`}
+                rounded-xl shadow-xl text-gray-100 ${className}`}
     {...props}
   >
     {children}
