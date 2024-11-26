@@ -4,8 +4,10 @@
   "description": "AI-powered size recommendation Chrome extension",
   "scripts": {
     "icons": "node scripts/generate-icons.js",
-    "dev": "node scripts/generate-icons.js && webpack --watch --mode development",
-    "build": "node scripts/generate-icons.js && webpack --mode production"
+    "dev": "rm -rf dist && node scripts/generate-icons.js && webpack --watch --mode development",
+    "build": "rm -rf dist && node scripts/generate-icons.js && webpack --mode production",
+    "build": "webpack --mode production && chmod +x dist/background.js",
+    "dev": "webpack --watch --mode development"
   },
   "dependencies": {
     "@preact/signals": "^1.2.2",

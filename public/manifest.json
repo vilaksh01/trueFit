@@ -10,7 +10,7 @@
     "tabs"
   ],
   "host_permissions": [
-    "*://*/*"
+    "*://*.myntra.com/*"
   ],
   "background": {
     "service_worker": "background.js",
@@ -18,16 +18,15 @@
   },
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": ["*://*.myntra.com/*"],
       "js": ["content.js"],
-      "css": ["content.css"],
-      "run_at": "document_idle"
+      "css": ["content.css"]
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["*.css"],
-      "matches": ["<all_urls>"]
+      "resources": ["*.css", "*.js"],
+      "matches": ["*://*.myntra.com/*"]
     }
   ],
   "action": {

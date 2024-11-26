@@ -1,46 +1,383 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Custom styles for floating button */
-#smart-fit-assistant-root {
-  all: initial;
+/* Base styles for overlay UI elements */
+.smartfit-overlay {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  z-index: 2147483647;
-  font-family: system-ui, -apple-system, sans-serif;
-}
-
-#smart-fit-assistant-root button {
-  all: unset;
-  cursor: pointer;
-}
-
-.smart-fit-button {
-  display: inline-flex;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(17, 24, 39, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 999999;
+  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background-color: rgb(147, 51, 234);
-  color: white;
-  border-radius: 9999px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  transition: background-color 0.2s;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.smart-fit-button:hover {
-  background-color: rgb(126, 34, 206);
+.smartfit-overlay.visible {
+  opacity: 1;
 }
 
-.smart-fit-panel {
+/* Analysis UI */
+.smartfit-analysis {
+  background: rgb(31, 41, 55);
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+              0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 460px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  color: rgb(243, 244, 246);
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.smartfit-overlay.visible .smartfit-analysis {
+  transform: translateY(0);
+}
+
+/* Scrollbar styling */
+.smartfit-analysis::-webkit-scrollbar {
+  width: 6px;
+}
+
+.smartfit-analysis::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.smartfit-analysis::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.5);
+  border-radius: 3px;
+}
+
+/* Headers and sections */
+.smartfit-header {
+  padding: 1.25rem;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.smartfit-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: rgb(243, 244, 246);
+}
+
+.smartfit-content {
+  padding: 1.25rem;
+}
+
+.smartfit-section {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: rgba(55, 65, 81, 0.3);
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  border-radius: 8px;
+}
+
+/* Size chart modifications */
+.size-chart-container {
+  margin: 1rem 0;
+  background: rgba(31, 41, 55, 0.6);
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.size-chart-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.875rem;
+}
+
+.size-chart-table th,
+.size-chart-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid rgba(75, 85, 99, 0.4);
+  text-align: center;
+}
+
+.size-chart-table th {
+  background: rgba(55, 65, 81, 0.5);
+  font-weight: 500;
+  color: rgb(209, 213, 219);
+  position: relative;
+}
+
+.size-chart-table th[title] {
+  cursor: help;
+}
+
+.size-chart-table th[title]:hover::after {
+  content: attr(title);
   position: absolute;
   bottom: 100%;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.5rem;
+  background: rgb(31, 41, 55);
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+/* Size buttons */
+.size-button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.size-button {
+  min-width: 3rem;
+  padding: 0.5rem 1rem;
+  background: rgba(55, 65, 81, 0.3);
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  border-radius: 6px;
+  color: rgb(209, 213, 219);
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.size-button:hover {
+  background: rgba(75, 85, 99, 0.4);
+}
+
+.size-button.selected {
+  background: rgb(124, 58, 237);
+  border-color: rgb(139, 92, 246);
+  color: white;
+}
+
+.size-button.out-of-stock {
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* Loading states */
+.smartfit-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid rgba(139, 92, 246, 0.3);
+  border-top-color: rgb(139, 92, 246);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
   margin-bottom: 1rem;
-  width: 20rem;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgb(229, 231, 235);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Alerts and messages */
+.smartfit-alert {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.smartfit-alert.error {
+  background: rgba(220, 38, 38, 0.2);
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  color: rgb(252, 165, 165);
+}
+
+.smartfit-alert.success {
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: rgb(110, 231, 183);
+}
+
+.smartfit-alert.info {
+  background: rgba(59, 130, 246, 0.2);
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  color: rgb(147, 197, 253);
+}
+
+/* Tooltips */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]:before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  padding: 0.5rem;
+  background: rgb(31, 41, 55);
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1;
+}
+
+[data-tooltip]:hover:before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-8px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .smartfit-analysis {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .size-chart-container {
+    overflow-x: auto;
+  }
+
+  .size-button {
+    min-width: 2.5rem;
+    padding: 0.375rem 0.75rem;
+  }
+
+  .smartfit-header {
+    padding: 1rem;
+  }
+
+  .smartfit-content {
+    padding: 1rem;
+  }
+
+  .smartfit-section {
+    padding: 0.875rem;
+  }
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  .smartfit-overlay {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .smartfit-analysis {
+    background: rgb(17, 24, 39);
+  }
+
+  .size-chart-table th {
+    background: rgba(31, 41, 55, 0.8);
+  }
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Utility classes */
+.smartfit-hidden {
+  display: none !important;
+}
+
+.smartfit-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Measurement instruction overlays */
+.measurement-instruction {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(17, 24, 39, 0.95);
+  backdrop-filter: blur(4px);
+  z-index: 1000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.measurement-instruction.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.measurement-content {
+  max-width: 500px;
+  padding: 2rem;
+  background: rgb(31, 41, 55);
+  border-radius: 12px;
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  text-align: center;
+}
+
+.measurement-image {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border-radius: 8px;
+}
+
+.measurement-steps {
+  text-align: left;
+  margin: 1rem 0;
+}
+
+.measurement-step {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(55, 65, 81, 0.3);
+  border-radius: 6px;
 }
