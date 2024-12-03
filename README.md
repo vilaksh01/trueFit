@@ -8,4 +8,4 @@ Smart Picks: Get the perfect fit every time! we check whether you are shopping w
 
 this is just a starting point i have some better ideas on it too.
 
-let us start to make this idea true, i have image to 3d body measurements generation api's, we need to work to build that described chrome extension from scration (from project directory), front end etc. we can use preact instead of react. but we need to design a wonderful UI too, then only it is very usable as an extension (since it is not an app, so it needs smart craft to design the usable ui)
+let us start to make this idea true, i don't have image to 3d body measurements generation API but we can take manual entry of those data, we need to work to build that described chrome extension from scration (from project directory), front end etc. we can use preact instead of react. but we need to design a wonderful UI too, then only it is very usable as an extension (since it is not an app, so it needs smart craft to design the usable ui)
